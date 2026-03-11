@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TruthSeeker – AI-Powered Fact Checking</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="hero-icon">🔍</div>
+    <h1 class="hero-title">TruthSeeker</h1>
+    <p class="hero-subtitle">AI-Powered Fact Checking</p>
+  </header>
+
+  <main class="main">
+
+    <!-- Search -->
+    <div class="search-wrap">
+      <div class="search-card">
+        <div class="search-input-group">
+          <label class="search-label" for="claim-input">Enter a claim to fact-check</label>
+          <textarea
+            id="claim-input"
+            class="claim-input"
+            rows="2"
+            placeholder="e.g. The Great Wall of China is visible from space."
+            maxlength="500"
+          ></textarea>
+        </div>
+        <span class="char-count"><span id="char-count">0</span>/500</span>
+        <button id="check-btn" class="check-btn" onclick="handleFactCheck()">Check Fact</button>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div id="loading" class="loading hidden">
+      <div class="loading-ring"></div>
+      <p class="loading-text">Searching across sources…</p>
+      <div class="loading-steps">
+        <div class="step" id="step-wiki"><span class="step-dot"></span>Wikipedia</div>
+        <div class="step" id="step-web"><span class="step-dot"></span>Web Search</div>
+        <div class="step" id="step-reddit"><span class="step-dot"></span>Reddit</div>
+        <div class="step" id="step-ai"><span class="step-dot"></span>AI Analysis</div>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div id="results-panel" class="results-panel hidden">
+
+      <!-- Verdict + chart -->
+      <div class="card result-top animate-in">
+        <div class="verdict-section">
+          <p class="result-label">Verdict</p>
+          <span id="verdict-badge" class="verdict-badge">–</span>
+        </div>
+        <div class="chart-section">
+          <p class="result-label">Credibility Score</p>
+          <div class="chart-wrapper">
+            <canvas id="credibility-chart"></canvas>
+            <div class="chart-center">
+              <span id="score-value">0</span>
+              <small>/ 100</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Analysis -->
+      <div class="card animate-in" style="animation-delay:0.1s">
+        <h3 class="section-title">Analysis</h3>
+        <p id="reasoning-text" class="reasoning-text">–</p>
+      </div>
+
+      <!-- Source cards (stagger-animated via JS) -->
+      <div class="sources-grid">
+        <div class="source-card" id="wiki-card">
+          <div class="source-head">
+            <span class="source-icon">📖</span>
+            <span class="source-name">Wikipedia</span>
+          </div>
+          <p id="wiki-snippet" class="source-snippet">–</p>
+        </div>
+        <div class="source-card" id="web-card">
+          <div class="source-head">
+            <span class="source-icon">🌐</span>
+            <span class="source-name">Web Search</span>
+          </div>
+          <p id="web-snippet" class="source-snippet">–</p>
+        </div>
+        <div class="source-card" id="reddit-card">
+          <div class="source-head">
+            <span class="source-icon">💬</span>
+            <span class="source-name">Reddit</span>
+          </div>
+          <p id="reddit-snippet" class="source-snippet">–</p>
+        </div>
+      </div>
+
+      <!-- Supporting / contradicting -->
+      <div class="verdict-row">
+        <div class="support-card">
+          <p class="verdict-row-title">✅ Sources supporting the verdict</p>
+          <ul id="supporting-list" class="pill-list"><li class="pill">None</li></ul>
+        </div>
+        <div class="contra-card">
+          <p class="verdict-row-title">❌ Sources against the verdict</p>
+          <ul id="contradicting-list" class="pill-list"><li class="pill">None</li></ul>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Collapsible chat -->
+    <div id="chat-panel" class="chat-panel hidden">
+      <div class="chat-header" onclick="toggleChat()">
+        <div class="chat-header-left">
+          <span>💬</span>
+          <span>Follow-up Questions</span>
+        </div>
+        <span class="chat-chevron" id="chat-chevron">▼</span>
+      </div>
+      <div class="chat-body" id="chat-body">
+        <div id="chat-messages" class="chat-messages"></div>
+        <div class="chat-input-row">
+          <input
+            id="chat-input"
+            type="text"
+            class="chat-input"
+            placeholder="Ask a follow-up question…"
+            maxlength="300"
+            onkeydown="if(event.key==='Enter') handleChat()"
+          />
+          <button class="send-btn" onclick="handleChat()">Send</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    TruthSeeker &copy; 2026 &mdash; Powered by GPT-4o-mini, Wikipedia, DuckDuckGo &amp; Reddit
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
