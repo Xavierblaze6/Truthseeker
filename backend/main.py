@@ -10,6 +10,8 @@ import os
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 
 from backend.models import (
     FactCheckRequest,
@@ -33,8 +35,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Mount frontend static files
+app.mount("/static", StaticFiles(directory="frontend"), name="static")
+
 
 # ── Routes ────────────────────────────────────────────────────────────────────
+
+@app.get("/")
+def serve_frontend():
+    """Serve the frontend app entrypoint."""
+    return FileResponse("frontend/index.html")
 
 @app.get("/health")
 async def health():

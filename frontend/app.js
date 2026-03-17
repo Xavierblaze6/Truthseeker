@@ -1,5 +1,5 @@
 // ── Config ────────────────────────────────────────────────────────────────
-const API_BASE = "http://localhost:8000";
+const API_BASE = window.location.origin;
 
 // ── Session ───────────────────────────────────────────────────────────────
 let sessionId = localStorage.getItem("ts_session_id");
