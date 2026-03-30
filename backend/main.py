@@ -7,8 +7,9 @@ Endpoints:
 """
 
 import os
+import asyncio
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -19,7 +20,8 @@ from backend.models import (
     ChatRequest,
     ChatResponse,
 )
-from backend.agents.fact_checker import run_fact_check
+from backend.agents.fact_checker import run_fact_check, is_valid_claim
+from backend.agents.image_detector import detect_deepfake
 from backend.memory import get_history, add_to_history
 
 load_dotenv()
@@ -59,6 +61,19 @@ async def fact_check(req: FactCheckRequest):
     Searches Wikipedia, DuckDuckGo and Reddit in parallel,
     then asks GPT-4o-mini to synthesise a verdict.
     """
+    is_valid, error_message = is_valid_claim(req.claim)
+    if not is_valid:
+        return FactCheckResponse(
+            verdict="INVALID",
+            credibility_score=0,
+            reasoning=error_message,
+            supporting_sources=[],
+            contradicting_sources=[],
+            wikipedia_snippet="",
+            web_snippets="",
+            reddit_snippets="",
+        )
+
     try:
         result = await run_fact_check(req.claim)
     except Exception as exc:
@@ -115,3 +130,31 @@ async def chat(req: ChatRequest):
     add_to_history(req.session_id, "assistant", reply)
 
     return ChatResponse(reply=reply)
+
+
+@app.post("/detect-image")
+async def detect_image(file: UploadFile = File(...)):
+    """Detect whether an uploaded image is likely AI-generated/manipulated."""
+    allowed_types = {"image/jpeg", "image/png", "image/webp"}
+    if file.content_type not in allowed_types:
+        raise HTTPException(
+            status_code=400,
+            detail="Unsupported image format. Please upload JPG, PNG, or WEBP.",
+        )
+
+    image_bytes = await file.read()
+    if not image_bytes:
+        raise HTTPException(status_code=400, detail="Uploaded file is empty.")
+
+    try:
+        loop = asyncio.get_running_loop()
+        result = await loop.run_in_executor(None, detect_deepfake, image_bytes)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    except Exception as exc:
+        raise HTTPException(
+            status_code=500,
+            detail="Image detection failed. Please try again in a moment.",
+        ) from exc
+
+    return result

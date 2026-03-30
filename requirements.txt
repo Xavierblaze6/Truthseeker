@@ -6,3 +6,8 @@ requests
 ddgs
 pydantic
 httpx
+transformers
+torch
+torchvision
+Pillow
+python-multipart

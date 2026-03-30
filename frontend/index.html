@@ -4,290 +4,241 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TruthSeeker – AI-Powered Fact Checking</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
   <style>
-/* ═══════════════════════════════════════════════════════════════════════════
-   TruthSeeker – Premium dark design  |  Perplexity × Linear aesthetic
-   ═══════════════════════════════════════════════════════════════════════════ */
-
 :root {
-  /* Core palette */
-  --bg:               #0a0a0f;
-  --surface:          #111118;
-  --surface-2:        #1a1a24;
-  --border:           #ffffff12;
-  --accent:           #6366f1;
-  --accent-glow:      #6366f140;
-  --text:             #f1f5f9;
-  --text-muted:       #64748b;
-
-  /* Verdict colours */
-  --true:             #22c55e;
-  --true-glow:        #22c55e30;
-  --false:            #ef4444;
-  --false-glow:       #ef444430;
-  --misleading:       #f59e0b;
-  --misleading-glow:  #f59e0b30;
-  --unverified:       #94a3b8;
-  --unverified-glow:  #94a3b830;
-
-  --radius:    16px;
-  --radius-lg: 20px;
-  --ease:      cubic-bezier(0.4, 0, 0.2, 1);
-  --transition: 0.25s var(--ease);
+  --bg: #ffffff;
+  --surface: #f8fafc;
+  --surface-2: #f1f5f9;
+  --border: #e2e8f0;
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --accent: #2563eb;
+  --accent-light: #eff6ff;
+  --true: #16a34a;
+  --false: #dc2626;
+  --misleading: #d97706;
+  --unverified: #6b7280;
 }
 
-/* ── Keyframe animations ─────────────────────────────────────────────────── */
-
-/* 1. Fade + slide up */
-@keyframes fadeSlideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0);    }
-}
-
-/* 2. Pulsing glow – one variant per verdict colour */
-@keyframes pulseGlowGreen {
-  0%, 100% { box-shadow: 0 0 8px #22c55e50; }
-  50%       { box-shadow: 0 0 20px #22c55e90, 0 0 40px #22c55e40; }
-}
-@keyframes pulseGlowRed {
-  0%, 100% { box-shadow: 0 0 8px #ef444450; }
-  50%       { box-shadow: 0 0 20px #ef444490, 0 0 40px #ef444440; }
-}
-@keyframes pulseGlowYellow {
-  0%, 100% { box-shadow: 0 0 8px #f59e0b50; }
-  50%       { box-shadow: 0 0 20px #f59e0b90, 0 0 40px #f59e0b40; }
-}
-@keyframes pulseGlowGray {
-  0%, 100% { box-shadow: 0 0 6px #94a3b830; }
-  50%       { box-shadow: 0 0 14px #94a3b860; }
-}
-
-/* 3. Shimmer skeleton */
-@keyframes shimmer {
-  0%   { background-position: -1000px 0; }
-  100% { background-position:  1000px 0; }
-}
-
-/* 4. Scan line on button */
-@keyframes scan {
-  0%   { transform: translateX(-100%); }
-  100% { transform: translateX(300%);  }
-}
-
-/* 5. Floating hero icon */
-@keyframes float {
-  0%, 100% { transform: translateY(0px);  }
-  50%       { transform: translateY(-6px); }
-}
-
-/* 6. Spinner */
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* 7. Typing bounce */
-@keyframes bounce {
-  0%, 80%, 100% { transform: translateY(0);    }
-  40%            { transform: translateY(-6px); }
-}
-
-/* ── Reset ───────────────────────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-
+* { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI",
-               "Helvetica Neue", sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 15px;
   line-height: 1.6;
-  min-height: 100vh;
-  overflow-x: hidden;
 }
 
-/* ── Hero ────────────────────────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.container {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.topbar {
+  border-bottom: 1px solid var(--border);
+  background: #fff;
+}
+
+.topbar-inner {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.brand-icon {
+  font-size: 1.1rem;
+}
+
+.powered-badge {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
 .hero {
-  position: relative;
-  background: radial-gradient(ellipse at top, #1e1b4b 0%, var(--bg) 60%);
-  padding: 80px 24px 64px;
   text-align: center;
-  overflow: hidden;
+  padding: 52px 0 26px;
 }
 
-/* CSS particle field */
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(1px   1px   at  8% 18%, #ffffff18 0%, transparent 100%),
-    radial-gradient(1px   1px   at 22% 72%, #ffffff12 0%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 38% 12%, #6366f128 0%, transparent 100%),
-    radial-gradient(1px   1px   at 55% 55%, #ffffff10 0%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 72% 28%, #ffffff16 0%, transparent 100%),
-    radial-gradient(1px   1px   at 14% 88%, #6366f120 0%, transparent 100%),
-    radial-gradient(1px   1px   at 62% 82%, #ffffff12 0%, transparent 100%),
-    radial-gradient(2px   2px   at 44% 44%, #6366f118 0%, transparent 100%),
-    radial-gradient(1px   1px   at 88% 62%, #ffffff14 0%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 28% 38%, #ffffff10 0%, transparent 100%),
-    radial-gradient(1px   1px   at 78% 85%, #6366f114 0%, transparent 100%),
-    radial-gradient(1px   1px   at 50%  8%, #ffffff16 0%, transparent 100%);
-  pointer-events: none;
+.hero h1 {
+  font-size: clamp(1.9rem, 5vw, 2.5rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
 }
 
-.hero-icon {
-  display: inline-block;
-  font-size: 3.2rem;
-  animation: float 3s ease-in-out infinite;
+.hero p {
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+.main {
+  padding-bottom: 48px;
+}
+
+.mode-tabs {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-bottom: 1px solid var(--border);
   margin-bottom: 18px;
 }
 
-.hero-title {
-  font-size: 3rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  background: linear-gradient(135deg, #fff 30%, #a5b4fc 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 10px;
-  animation: fadeSlideUp 0.6s ease-out both;
+.mode-tab {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted);
+  font-size: 0.94rem;
+  font-weight: 600;
+  padding: 10px 0;
+  cursor: pointer;
 }
 
-.hero-subtitle {
-  color: #818cf8;
-  font-size: 0.95rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  font-weight: 500;
-  animation: fadeSlideUp 0.6s 0.1s ease-out both;
+.mode-tab.active {
+  color: var(--text);
+  border-bottom-color: var(--accent);
 }
 
-/* ── Main ────────────────────────────────────────────────────────────────── */
-.main {
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 32px 16px 80px;
+.mode-content {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
-/* ── Search card ─────────────────────────────────────────────────────────── */
-.search-wrap {
-  animation: fadeSlideUp 0.6s 0.2s ease-out both;
+.search-card,
+.card,
+.image-upload-card,
+.chat-panel {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
 }
 
 .search-card {
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 8px 8px 8px 20px;
+  padding: 12px;
   display: flex;
-  align-items: flex-end;
-  gap: 12px;
-  transition: border-color var(--transition), box-shadow var(--transition);
-}
-
-.search-card:focus-within {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-glow);
+  flex-direction: column;
+  gap: 10px;
 }
 
 .search-input-group {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .search-label {
-  font-size: 0.68rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
   color: var(--text-muted);
-  padding-top: 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
 }
 
 .claim-input {
-  background: transparent;
-  border: none;
-  outline: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  font-family: "Inter", sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.6;
   color: var(--text);
-  font-size: 1rem;
-  line-height: 1.5;
-  resize: none;
-  font-family: inherit;
-  width: 100%;
-  padding-bottom: 10px;
+  resize: vertical;
+  min-height: 94px;
 }
 
-.claim-input::placeholder { color: var(--text-muted); }
+.claim-input:focus,
+.chat-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.search-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
 
 .char-count {
-  font-size: 0.7rem;
   color: var(--text-muted);
-  padding-bottom: 10px;
-  white-space: nowrap;
-  align-self: flex-end;
+  font-size: 0.78rem;
+  font-family: "JetBrains Mono", monospace;
 }
 
-/* ── Check Fact button ───────────────────────────────────────────────────── */
-.check-btn {
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  color: #fff;
+.check-btn,
+.send-btn {
   border: none;
-  border-radius: 12px;
-  padding: 14px 26px;
-  font-size: 0.95rem;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  white-space: nowrap;
-  flex-shrink: 0;
-  align-self: flex-end;
-  margin-bottom: 0;
-  transition: transform var(--transition), box-shadow var(--transition),
-              opacity var(--transition);
+  transition: background 0.2s ease;
 }
 
-.check-btn:hover:not(:disabled) {
-  transform: scale(1.02);
-  box-shadow: 0 4px 24px #6366f165;
+.check-btn {
+  padding: 10px 16px;
 }
 
-.check-btn:active:not(:disabled) { transform: scale(0.98); }
-.check-btn:disabled { opacity: 0.55; cursor: not-allowed; }
-
-/* Scanning shimmer while loading */
-.check-btn.scanning::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 40%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, #ffffff35, transparent);
-  animation: scan 1.1s linear infinite;
+.send-btn {
+  padding: 10px 14px;
 }
 
-/* ── Loading state ───────────────────────────────────────────────────────── */
+.check-btn:hover,
+.send-btn:hover {
+  background: #1d4ed8;
+}
+
+.check-btn:disabled,
+.send-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
 .loading {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
-  padding: 48px 24px;
-  animation: fadeSlideUp 0.3s ease-out both;
+  gap: 12px;
+  padding: 22px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
 }
 
 .loading-ring {
-  width: 48px;
-  height: 48px;
-  border: 3px solid var(--border);
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  border: 2px solid var(--border);
   border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin 0.85s linear infinite;
+  animation: spin 1s linear infinite;
 }
 
 .loading-text {
@@ -297,110 +248,92 @@ body {
 
 .loading-steps {
   display: flex;
-  gap: 28px;
   flex-wrap: wrap;
   justify-content: center;
+  gap: 8px;
 }
 
 .step {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 0.8rem;
   color: var(--text-muted);
-  opacity: 0.35;
-  transition: opacity 0.35s ease, color 0.35s ease;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px 8px;
+  font-size: 0.76rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
-
-.step.active { opacity: 1; color: var(--accent); }
-.step.done   { opacity: 1; color: var(--true);   }
 
 .step-dot {
   width: 6px;
   height: 6px;
-  border-radius: 50%;
+  border-radius: 999px;
   background: currentColor;
-  flex-shrink: 0;
 }
 
-/* ── Card base ───────────────────────────────────────────────────────────── */
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 24px;
+.step.active { color: var(--accent); }
+.step.done { color: var(--true); }
+
+.results-panel,
+.sources-grid,
+.verdict-row {
+  display: grid;
+  gap: 14px;
 }
 
-/* Animation helpers */
-.animate-in   { animation: fadeSlideUp 0.5s ease-out both; }
-.fade-slide-up { animation: fadeSlideUp 0.5s ease-out both; }
-
-/* ── Results panel ───────────────────────────────────────────────────────── */
-.results-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-/* ── Verdict + chart top card ────────────────────────────────────────────── */
 .result-top {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 18px;
   align-items: center;
-  justify-content: space-around;
-  gap: 32px;
-  flex-wrap: wrap;
+}
+
+.card {
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
 }
 
 .result-label {
-  font-size: 0.68rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
   color: var(--text-muted);
-  margin-bottom: 16px;
-  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin-bottom: 10px;
 }
 
-/* Verdict badge */
-.verdict-section { text-align: center; }
-
-.verdict-badge {
+.verdict-badge,
+.image-verdict {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  padding: 12px 40px;
-  border-radius: 100px;
-  font-size: 1.05rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  border: 2px solid currentColor;
-  transition: all var(--transition);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  font-weight: 700;
 }
 
 .verdict-badge.true {
+  background: #dcfce7;
   color: var(--true);
-  background: var(--true-glow);
-  animation: pulseGlowGreen 2.5s ease-in-out infinite;
-}
-.verdict-badge.false {
-  color: var(--false);
-  background: var(--false-glow);
-  animation: pulseGlowRed 2.5s ease-in-out infinite;
-}
-.verdict-badge.misleading {
-  color: var(--misleading);
-  background: var(--misleading-glow);
-  animation: pulseGlowYellow 2.5s ease-in-out infinite;
-}
-.verdict-badge.unverified {
-  color: var(--unverified);
-  background: var(--unverified-glow);
-  animation: pulseGlowGray 3s ease-in-out infinite;
 }
 
-/* Doughnut */
-.chart-section { text-align: center; }
+.verdict-badge.false {
+  background: #fee2e2;
+  color: var(--false);
+}
+
+.verdict-badge.misleading {
+  background: #fef3c7;
+  color: var(--misleading);
+}
+
+.verdict-badge.unverified {
+  background: #f1f5f9;
+  color: var(--unverified);
+}
+
+.verdict-badge.invalid {
+  background: #fef3c7;
+  color: var(--misleading);
+}
 
 .chart-wrapper {
   position: relative;
@@ -409,7 +342,10 @@ body {
   margin: 0 auto;
 }
 
-#credibility-chart { width: 100% !important; height: 100% !important; }
+#credibility-chart {
+  width: 100% !important;
+  height: 100% !important;
+}
 
 .chart-center {
   position: absolute;
@@ -421,495 +357,668 @@ body {
   pointer-events: none;
 }
 
-#score-value {
-  font-size: 2.4rem;
+#score-value,
+.image-confidence-value {
+  font-size: 2rem;
   font-weight: 800;
-  color: var(--text);
   line-height: 1;
 }
 
 .chart-center small {
-  font-size: 0.72rem;
+  font-family: "JetBrains Mono", monospace;
   color: var(--text-muted);
-}
-
-/* ── Analysis card ───────────────────────────────────────────────────────── */
-.section-title {
   font-size: 0.72rem;
+}
+
+.section-title {
+  font-size: 0.8rem;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--accent);
-  margin-bottom: 12px;
-}
-
-.reasoning-text {
   color: var(--text);
-  line-height: 1.75;
-  font-size: 0.95rem;
+  margin-bottom: 8px;
 }
 
-/* ── Source cards grid ───────────────────────────────────────────────────── */
+.reasoning-text,
+.source-snippet {
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.invalid-prompt {
+  margin-top: 10px;
+  border: 1px solid #fde68a;
+  background: #fffbeb;
+  color: #92400e;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+}
+
 .sources-grid {
-  display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
 }
 
 .source-card {
-  background: var(--surface-2);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  opacity: 0; /* revealed by stagger animation */
-  transition: transform var(--transition), border-color var(--transition),
-              box-shadow var(--transition);
+  border-radius: 10px;
+  padding: 16px;
+  background: #fff;
+  animation: fadeIn 0.2s ease;
 }
 
-.source-card.fade-slide-up { opacity: 1; }
-
 .source-card:hover {
-  transform: translateY(-4px);
-  border-color: #ffffff28;
-  box-shadow: 0 8px 32px #00000050;
+  background: var(--surface);
 }
 
 .source-head {
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-bottom: 8px;
 }
-
-.source-icon { font-size: 1.2rem; }
 
 .source-name {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 700;
-  color: var(--text);
 }
 
-.source-snippet {
-  font-size: 0.82rem;
-  color: var(--text-muted);
-  line-height: 1.6;
-  white-space: pre-line;
-}
-
-/* ── Supporting / contradicting ──────────────────────────────────────────── */
 .verdict-row {
-  display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
 }
 
-.support-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--true);
-  border-radius: var(--radius);
-  padding: 20px;
-}
-
+.support-card,
 .contra-card {
-  background: var(--surface);
   border: 1px solid var(--border);
-  border-left: 3px solid var(--false);
-  border-radius: var(--radius);
-  padding: 20px;
+  border-radius: 10px;
+  background: #fff;
+  padding: 16px;
 }
+
+.support-card { border-left: 3px solid var(--true); }
+.contra-card { border-left: 3px solid var(--false); }
 
 .verdict-row-title {
-  font-size: 0.8rem;
-  font-weight: 700;
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 10px;
 }
 
 .pill-list {
+  list-style: none;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  list-style: none;
+  gap: 6px;
 }
 
 .pill {
   background: var(--surface-2);
+  color: var(--text);
+  border-radius: 6px;
   border: 1px solid var(--border);
-  border-radius: 100px;
-  padding: 4px 12px;
   font-size: 0.78rem;
-  color: var(--text-muted);
+  padding: 4px 8px;
 }
 
-/* ── Chat panel ──────────────────────────────────────────────────────────── */
 .chat-panel {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
   overflow: hidden;
 }
 
 .chat-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 18px 24px;
+  align-items: center;
+  padding: 14px 16px;
+  background: #fff;
+  border-bottom: 1px solid var(--border);
   cursor: pointer;
-  user-select: none;
-  transition: background var(--transition);
 }
-
-.chat-header:hover { background: var(--surface-2); }
 
 .chat-header-left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   font-weight: 600;
-  font-size: 0.9rem;
 }
 
 .chat-chevron {
-  font-size: 0.72rem;
   color: var(--text-muted);
-  transition: transform var(--transition);
+  transition: transform 0.2s ease;
 }
-.chat-chevron.open { transform: rotate(180deg); }
 
-/* Collapsible body – height animates via max-height */
+.chat-chevron.open {
+  transform: rotate(180deg);
+}
+
 .chat-body {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: max-height 0.25s ease;
 }
-.chat-body.open { max-height: 560px; }
+
+.chat-body.open {
+  max-height: 540px;
+}
 
 .chat-messages {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 8px 24px 16px;
-  max-height: 280px;
+  gap: 8px;
+  max-height: 260px;
   overflow-y: auto;
+  padding: 12px 16px;
 }
 
-.chat-messages::-webkit-scrollbar { width: 4px; }
-.chat-messages::-webkit-scrollbar-track { background: transparent; }
-.chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
 .bubble {
-  padding: 10px 14px;
-  border-radius: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
   max-width: 82%;
   font-size: 0.88rem;
-  line-height: 1.55;
-  animation: fadeSlideUp 0.3s ease-out both;
+  line-height: 1.5;
 }
 
 .bubble.user {
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  background: var(--accent);
   color: #fff;
   align-self: flex-end;
-  border-bottom-right-radius: 4px;
 }
 
 .bubble.assistant {
   background: var(--surface-2);
-  border: 1px solid var(--border);
   color: var(--text);
+  border: 1px solid var(--border);
   align-self: flex-start;
-  border-bottom-left-radius: 4px;
 }
 
-/* Typing indicator */
 .typing-indicator {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 12px 16px;
-  background: var(--surface-2);
+  gap: 4px;
   border: 1px solid var(--border);
-  border-radius: 12px;
-  border-bottom-left-radius: 4px;
-  align-self: flex-start;
-  animation: fadeSlideUp 0.2s ease-out both;
+  background: var(--surface-2);
+  border-radius: 10px;
+  padding: 8px 10px;
 }
 
 .typing-dot {
   width: 6px;
   height: 6px;
-  border-radius: 50%;
+  border-radius: 999px;
   background: var(--text-muted);
-  animation: bounce 1.2s ease-in-out infinite;
 }
-.typing-dot:nth-child(2) { animation-delay: 0.2s; }
-.typing-dot:nth-child(3) { animation-delay: 0.4s; }
 
 .chat-input-row {
+  border-top: 1px solid var(--border);
+  padding: 10px 16px 14px;
   display: flex;
-  gap: 10px;
-  padding: 0 24px 20px;
+  gap: 8px;
 }
 
 .chat-input {
   flex: 1;
-  background: var(--surface-2);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  color: var(--text);
+  border-radius: 8px;
+  padding: 10px 12px;
   font-size: 0.9rem;
-  padding: 10px 16px;
-  font-family: inherit;
-  transition: border-color var(--transition), box-shadow var(--transition);
 }
 
-.chat-input:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-glow);
+.image-upload-card {
+  padding: 16px;
 }
 
-.chat-input::placeholder { color: var(--text-muted); }
-
-.send-btn {
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  color: #fff;
-  border: none;
-  border-radius: 12px;
-  padding: 10px 20px;
-  font-size: 0.88rem;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: transform var(--transition), box-shadow var(--transition);
-}
-
-.send-btn:hover { transform: scale(1.02); box-shadow: 0 4px 16px #6366f155; }
-.send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-/* ── Footer ──────────────────────────────────────────────────────────────── */
-.footer {
+.drop-zone {
+  border: 2px dashed var(--border);
+  border-radius: 10px;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: 28px;
   color: var(--text-muted);
-  font-size: 0.78rem;
-  border-top: 1px solid var(--border);
+  gap: 8px;
+  cursor: pointer;
+  background: #fff;
+  transition: border-color 0.2s ease, background 0.2s ease;
 }
 
-/* ── Utility ─────────────────────────────────────────────────────────────── */
-.hidden { display: none !important; }
+.drop-zone.dragover {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
 
-/* ── Responsive ──────────────────────────────────────────────────────────── */
+.image-preview-wrap {
+  margin-top: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.image-preview {
+  width: 100%;
+  max-height: 360px;
+  object-fit: contain;
+}
+
+.image-analyze-btn {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.image-result-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.image-verdict.fake {
+  background: #fee2e2;
+  color: var(--false);
+}
+
+.image-verdict.real {
+  background: #dcfce7;
+  color: var(--true);
+}
+
+.probability-stack {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.probability-row {
+  display: grid;
+  grid-template-columns: 72px 1fr 56px;
+  gap: 8px;
+  align-items: center;
+}
+
+.probability-label,
+.probability-value {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.confidence-track {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #dc2626 0%, #d97706 50%, #16a34a 100%);
+  overflow: hidden;
+  position: relative;
+}
+
+.confidence-fill {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: #fff;
+}
+
+.image-warning {
+  margin-top: 12px;
+  border: 1px solid #fecaca;
+  background: #fef2f2;
+  color: #991b1b;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 0.88rem;
+}
+
+.footer {
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  text-align: center;
+  padding: 20px 0;
+  font-size: 0.78rem;
+  margin-top: 36px;
+}
+
+.hidden {
+  display: none !important;
+}
+
 @media (max-width: 768px) {
-  .hero-title           { font-size: 2.1rem; }
-  .search-card          { flex-direction: column; align-items: stretch; padding: 16px; }
-  .check-btn            { width: 100%; }
-  .result-top           { flex-direction: column; align-items: center; }
-  .sources-grid         { grid-template-columns: 1fr; }
-  .verdict-row          { grid-template-columns: 1fr; }
-  .loading-steps        { flex-direction: column; gap: 8px; }
+  .container {
+    width: calc(100% - 24px);
+  }
+
+  .hero {
+    padding-top: 32px;
+  }
+
+  .mode-tabs {
+    gap: 12px;
+  }
+
+  .search-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .check-btn {
+    width: 100%;
+  }
+
+  .result-top {
+    grid-template-columns: 1fr;
+  }
+
+  .sources-grid,
+  .verdict-row {
+    grid-template-columns: 1fr;
+  }
+
+  .image-result-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
 </head>
 <body>
-
-  <!-- Hero -->
-  <header class="hero">
-    <div class="hero-icon">🔍</div>
-    <h1 class="hero-title">TruthSeeker</h1>
-    <p class="hero-subtitle">AI-Powered Fact Checking</p>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <span class="brand-icon">🔍</span>
+        <span>TruthSeeker</span>
+      </div>
+      <span class="powered-badge">Powered by AI</span>
+    </div>
   </header>
 
-  <main class="main">
+  <section class="hero container">
+    <h1>Verify any claim instantly</h1>
+    <p>AI-powered fact-checking across Wikipedia, Web, and Reddit</p>
+  </section>
 
-    <!-- Search -->
-    <div class="search-wrap">
+  <main class="main container">
+    <div class="mode-tabs" role="tablist" aria-label="Verification modes">
+      <button id="tab-claim" class="mode-tab active" onclick="switchMode('claim')" role="tab" aria-selected="true">Check Claim</button>
+      <button id="tab-image" class="mode-tab" onclick="switchMode('image')" role="tab" aria-selected="false">Verify Image</button>
+    </div>
+
+    <section id="claim-mode" class="mode-content">
       <div class="search-card">
         <div class="search-input-group">
           <label class="search-label" for="claim-input">Enter a claim to fact-check</label>
           <textarea
             id="claim-input"
             class="claim-input"
-            rows="2"
+            rows="3"
             placeholder="e.g. The Great Wall of China is visible from space."
             maxlength="500"
           ></textarea>
         </div>
-        <span class="char-count"><span id="char-count">0</span>/500</span>
-        <button id="check-btn" class="check-btn" onclick="handleFactCheck()">Check Fact</button>
-      </div>
-    </div>
-
-    <!-- Loading -->
-    <div id="loading" class="loading hidden">
-      <div class="loading-ring"></div>
-      <p class="loading-text">Searching across sources…</p>
-      <div class="loading-steps">
-        <div class="step" id="step-wiki"><span class="step-dot"></span>Wikipedia</div>
-        <div class="step" id="step-web"><span class="step-dot"></span>Web Search</div>
-        <div class="step" id="step-reddit"><span class="step-dot"></span>Reddit</div>
-        <div class="step" id="step-ai"><span class="step-dot"></span>AI Analysis</div>
-      </div>
-    </div>
-
-    <!-- Results -->
-    <div id="results-panel" class="results-panel hidden">
-
-      <!-- Verdict + chart -->
-      <div class="card result-top animate-in">
-        <div class="verdict-section">
-          <p class="result-label">Verdict</p>
-          <span id="verdict-badge" class="verdict-badge">–</span>
+        <div class="search-actions">
+          <span class="char-count"><span id="char-count">0</span>/500</span>
+          <button id="check-btn" class="check-btn" onclick="handleFactCheck()">Check Fact</button>
         </div>
-        <div class="chart-section">
-          <p class="result-label">Credibility Score</p>
-          <div class="chart-wrapper">
-            <canvas id="credibility-chart"></canvas>
-            <div class="chart-center">
-              <span id="score-value">0</span>
-              <small>/ 100</small>
+      </div>
+
+      <div id="loading" class="loading hidden">
+        <div class="loading-ring"></div>
+        <p class="loading-text">Searching across trusted sources…</p>
+        <div class="loading-steps">
+          <div class="step" id="step-wiki"><span class="step-dot"></span>Wikipedia</div>
+          <div class="step" id="step-web"><span class="step-dot"></span>Web Search</div>
+          <div class="step" id="step-reddit"><span class="step-dot"></span>Reddit</div>
+          <div class="step" id="step-ai"><span class="step-dot"></span>AI Analysis</div>
+        </div>
+      </div>
+
+      <div id="results-panel" class="results-panel hidden">
+        <div class="card result-top">
+          <div class="verdict-section">
+            <p class="result-label">Verdict</p>
+            <span id="verdict-badge" class="verdict-badge">-</span>
+          </div>
+          <div id="chart-section" class="chart-section">
+            <p class="result-label">Credibility Score</p>
+            <div class="chart-wrapper">
+              <canvas id="credibility-chart"></canvas>
+              <div class="chart-center">
+                <span id="score-value">0</span>
+                <small>/ 100</small>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Analysis -->
-      <div class="card animate-in" style="animation-delay:0.1s">
-        <h3 class="section-title">Analysis</h3>
-        <p id="reasoning-text" class="reasoning-text">–</p>
-      </div>
+        <div id="invalid-prompt" class="invalid-prompt hidden">
+          Please enter a complete factual claim to verify
+        </div>
 
-      <!-- Source cards (stagger-animated via JS) -->
-      <div class="sources-grid">
-        <div class="source-card" id="wiki-card">
-          <div class="source-head">
-            <span class="source-icon">📖</span>
-            <span class="source-name">Wikipedia</span>
+        <div class="card">
+          <h3 class="section-title">Analysis</h3>
+          <p id="reasoning-text" class="reasoning-text">-</p>
+        </div>
+
+        <div class="sources-grid">
+          <div class="source-card" id="wiki-card">
+            <div class="source-head">
+              <span class="source-icon">📖</span>
+              <span class="source-name">Wikipedia</span>
+            </div>
+            <p id="wiki-snippet" class="source-snippet">-</p>
           </div>
-          <p id="wiki-snippet" class="source-snippet">–</p>
-        </div>
-        <div class="source-card" id="web-card">
-          <div class="source-head">
-            <span class="source-icon">🌐</span>
-            <span class="source-name">Web Search</span>
+          <div class="source-card" id="web-card">
+            <div class="source-head">
+              <span class="source-icon">🌐</span>
+              <span class="source-name">Web Search</span>
+            </div>
+            <p id="web-snippet" class="source-snippet">-</p>
           </div>
-          <p id="web-snippet" class="source-snippet">–</p>
-        </div>
-        <div class="source-card" id="reddit-card">
-          <div class="source-head">
-            <span class="source-icon">💬</span>
-            <span class="source-name">Reddit</span>
+          <div class="source-card" id="reddit-card">
+            <div class="source-head">
+              <span class="source-icon">💬</span>
+              <span class="source-name">Reddit</span>
+            </div>
+            <p id="reddit-snippet" class="source-snippet">-</p>
           </div>
-          <p id="reddit-snippet" class="source-snippet">–</p>
+        </div>
+
+        <div class="verdict-row">
+          <div class="support-card">
+            <p class="verdict-row-title">Sources supporting the verdict</p>
+            <ul id="supporting-list" class="pill-list"><li class="pill">None</li></ul>
+          </div>
+          <div class="contra-card">
+            <p class="verdict-row-title">Sources against the verdict</p>
+            <ul id="contradicting-list" class="pill-list"><li class="pill">None</li></ul>
+          </div>
         </div>
       </div>
 
-      <!-- Supporting / contradicting -->
-      <div class="verdict-row">
-        <div class="support-card">
-          <p class="verdict-row-title">✅ Sources supporting the verdict</p>
-          <ul id="supporting-list" class="pill-list"><li class="pill">None</li></ul>
+      <div id="chat-panel" class="chat-panel hidden">
+        <div class="chat-header" onclick="toggleChat()">
+          <div class="chat-header-left">
+            <span>💬</span>
+            <span>Follow-up Questions</span>
+          </div>
+          <span class="chat-chevron" id="chat-chevron">▼</span>
         </div>
-        <div class="contra-card">
-          <p class="verdict-row-title">❌ Sources against the verdict</p>
-          <ul id="contradicting-list" class="pill-list"><li class="pill">None</li></ul>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Collapsible chat -->
-    <div id="chat-panel" class="chat-panel hidden">
-      <div class="chat-header" onclick="toggleChat()">
-        <div class="chat-header-left">
-          <span>💬</span>
-          <span>Follow-up Questions</span>
-        </div>
-        <span class="chat-chevron" id="chat-chevron">▼</span>
-      </div>
-      <div class="chat-body" id="chat-body">
-        <div id="chat-messages" class="chat-messages"></div>
-        <div class="chat-input-row">
-          <input
-            id="chat-input"
-            type="text"
-            class="chat-input"
-            placeholder="Ask a follow-up question…"
-            maxlength="300"
-            onkeydown="if(event.key==='Enter') handleChat()"
-          />
-          <button class="send-btn" onclick="handleChat()">Send</button>
+        <div class="chat-body" id="chat-body">
+          <div id="chat-messages" class="chat-messages"></div>
+          <div class="chat-input-row">
+            <input
+              id="chat-input"
+              type="text"
+              class="chat-input"
+              placeholder="Ask a follow-up question..."
+              maxlength="300"
+              onkeydown="if(event.key==='Enter') handleChat()"
+            />
+            <button class="send-btn" onclick="handleChat()">Send</button>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
 
+    <section id="image-mode" class="mode-content hidden">
+      <div class="image-upload-card">
+        <div id="image-drop-zone" class="drop-zone" onclick="triggerImagePicker()">
+          <strong>Drop image here or click to upload</strong>
+          <span>Supported formats: JPG, PNG, WEBP</span>
+          <input id="image-file-input" type="file" accept="image/jpeg,image/png,image/webp" class="hidden" />
+        </div>
+
+        <div id="image-preview-wrap" class="image-preview-wrap hidden">
+          <img id="image-preview" class="image-preview" alt="Uploaded image preview" />
+        </div>
+
+        <button id="image-analyze-btn" class="check-btn image-analyze-btn" onclick="analyzeImage()" disabled>
+          Analyze Image
+        </button>
+      </div>
+
+      <div id="image-results-panel" class="card hidden">
+        <div class="image-result-top">
+          <div>
+            <p class="result-label">Image Verdict</p>
+            <span id="image-verdict-badge" class="image-verdict">-</span>
+          </div>
+          <div class="image-confidence">
+            <p class="result-label">Confidence</p>
+            <div id="image-confidence-value" class="image-confidence-value">0%</div>
+          </div>
+        </div>
+
+        <div class="probability-stack">
+          <div class="probability-row">
+            <span class="probability-label">Fake</span>
+            <div class="confidence-track">
+              <div id="image-fake-prob-fill" class="confidence-fill"></div>
+            </div>
+            <span id="image-fake-prob-label" class="probability-value">0%</span>
+          </div>
+          <div class="probability-row">
+            <span class="probability-label">Real</span>
+            <div class="confidence-track">
+              <div id="image-real-prob-fill" class="confidence-fill"></div>
+            </div>
+            <span id="image-real-prob-label" class="probability-value">0%</span>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px; padding:14px;">
+          <h3 class="section-title">Explanation</h3>
+          <p id="image-explanation" class="reasoning-text">-</p>
+        </div>
+
+        <div id="image-warning" class="image-warning hidden">
+          ⚠️ This image may have been AI-generated or manipulated
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="footer">
-    TruthSeeker &copy; 2026 &mdash; Powered by GPT-4o-mini, Wikipedia, DuckDuckGo &amp; Reddit
+    TruthSeeker © 2026 — Powered by GPT-4o-mini, Wikipedia, DuckDuckGo and Reddit
   </footer>
 
   <script>
-// ── Config ────────────────────────────────────────────────────────────────
 const API_BASE = window.location.origin;
 
-// ── Session ───────────────────────────────────────────────────────────────
 let sessionId = localStorage.getItem("ts_session_id");
 if (!sessionId) {
   sessionId = crypto.randomUUID();
   localStorage.setItem("ts_session_id", sessionId);
 }
 
-// ── State ─────────────────────────────────────────────────────────────────
 let credibilityChart = null;
 let chatOpen = false;
+let activeMode = "claim";
+let selectedImageFile = null;
 
-// ── DOM refs ──────────────────────────────────────────────────────────────
-const claimInput        = document.getElementById("claim-input");
-const checkBtn          = document.getElementById("check-btn");
-const charCountEl       = document.getElementById("char-count");
-const loadingEl         = document.getElementById("loading");
-const resultsPanel      = document.getElementById("results-panel");
-const verdictBadge      = document.getElementById("verdict-badge");
-const scoreValue        = document.getElementById("score-value");
-const reasoningText     = document.getElementById("reasoning-text");
-const wikiSnippet       = document.getElementById("wiki-snippet");
-const webSnippet        = document.getElementById("web-snippet");
-const redditSnippet     = document.getElementById("reddit-snippet");
-const supportingList    = document.getElementById("supporting-list");
+const claimInput = document.getElementById("claim-input");
+const checkBtn = document.getElementById("check-btn");
+const charCountEl = document.getElementById("char-count");
+const loadingEl = document.getElementById("loading");
+const resultsPanel = document.getElementById("results-panel");
+const verdictBadge = document.getElementById("verdict-badge");
+const scoreValue = document.getElementById("score-value");
+const chartSection = document.getElementById("chart-section");
+const invalidPrompt = document.getElementById("invalid-prompt");
+const reasoningText = document.getElementById("reasoning-text");
+const wikiSnippet = document.getElementById("wiki-snippet");
+const webSnippet = document.getElementById("web-snippet");
+const redditSnippet = document.getElementById("reddit-snippet");
+const supportingList = document.getElementById("supporting-list");
 const contradictingList = document.getElementById("contradicting-list");
-const chatPanel         = document.getElementById("chat-panel");
-const chatBody          = document.getElementById("chat-body");
-const chatChevron       = document.getElementById("chat-chevron");
-const chatMessages      = document.getElementById("chat-messages");
-const chatInput         = document.getElementById("chat-input");
+const chatPanel = document.getElementById("chat-panel");
+const chatBody = document.getElementById("chat-body");
+const chatChevron = document.getElementById("chat-chevron");
+const chatMessages = document.getElementById("chat-messages");
+const chatInput = document.getElementById("chat-input");
+const tabClaim = document.getElementById("tab-claim");
+const tabImage = document.getElementById("tab-image");
+const claimMode = document.getElementById("claim-mode");
+const imageMode = document.getElementById("image-mode");
+const imageDropZone = document.getElementById("image-drop-zone");
+const imageFileInput = document.getElementById("image-file-input");
+const imagePreviewWrap = document.getElementById("image-preview-wrap");
+const imagePreview = document.getElementById("image-preview");
+const imageAnalyzeBtn = document.getElementById("image-analyze-btn");
+const imageResultsPanel = document.getElementById("image-results-panel");
+const imageVerdictBadge = document.getElementById("image-verdict-badge");
+const imageConfidenceValue = document.getElementById("image-confidence-value");
+const imageFakeProbFill = document.getElementById("image-fake-prob-fill");
+const imageRealProbFill = document.getElementById("image-real-prob-fill");
+const imageFakeProbLabel = document.getElementById("image-fake-prob-label");
+const imageRealProbLabel = document.getElementById("image-real-prob-label");
+const imageExplanation = document.getElementById("image-explanation");
+const imageWarning = document.getElementById("image-warning");
 
 const steps = {
-  wiki:   document.getElementById("step-wiki"),
-  web:    document.getElementById("step-web"),
+  wiki: document.getElementById("step-wiki"),
+  web: document.getElementById("step-web"),
   reddit: document.getElementById("step-reddit"),
-  ai:     document.getElementById("step-ai"),
+  ai: document.getElementById("step-ai"),
 };
 
-// ── Character counter ─────────────────────────────────────────────────────
 claimInput.addEventListener("input", () => {
   charCountEl.textContent = claimInput.value.length;
 });
 
-// ── Loading step sequencer ────────────────────────────────────────────────
+imageFileInput.addEventListener("change", (event) => {
+  const [file] = event.target.files || [];
+  if (file) setSelectedImage(file);
+});
+
+["dragenter", "dragover"].forEach((eventName) => {
+  imageDropZone.addEventListener(eventName, (event) => {
+    event.preventDefault();
+    imageDropZone.classList.add("dragover");
+  });
+});
+
+["dragleave", "drop"].forEach((eventName) => {
+  imageDropZone.addEventListener(eventName, (event) => {
+    event.preventDefault();
+    imageDropZone.classList.remove("dragover");
+  });
+});
+
+imageDropZone.addEventListener("drop", (event) => {
+  const [file] = event.dataTransfer?.files || [];
+  if (file) setSelectedImage(file);
+});
+
 let stepTimers = [];
 
 function startLoadingSteps() {
-  const order   = ["wiki", "web", "reddit", "ai"];
-  const delays  = [0, 500, 1000, 1700];
-  order.forEach(k => { steps[k].className = "step"; });
+  const order = ["wiki", "web", "reddit", "ai"];
+  const delays = [0, 350, 700, 1050];
+  order.forEach((k) => {
+    steps[k].className = "step";
+  });
   stepTimers = delays.map((delay, i) =>
     setTimeout(() => {
       if (i > 0) steps[order[i - 1]].className = "step done";
@@ -920,13 +1029,17 @@ function startLoadingSteps() {
 
 function stopLoadingSteps() {
   stepTimers.forEach(clearTimeout);
-  Object.values(steps).forEach(s => { s.className = "step done"; });
+  Object.values(steps).forEach((s) => {
+    s.className = "step done";
+  });
 }
 
-// ── Fact-check handler ────────────────────────────────────────────────────
 async function handleFactCheck() {
   const claim = claimInput.value.trim();
-  if (!claim) { claimInput.focus(); return; }
+  if (!claim) {
+    claimInput.focus();
+    return;
+  }
 
   setLoading(true);
   resultsPanel.classList.add("hidden");
@@ -950,50 +1063,128 @@ async function handleFactCheck() {
   }
 }
 
-// ── Render results ────────────────────────────────────────────────────────
+function switchMode(mode) {
+  activeMode = mode;
+  const claimActive = mode === "claim";
+  claimMode.classList.toggle("hidden", !claimActive);
+  imageMode.classList.toggle("hidden", claimActive);
+  tabClaim.classList.toggle("active", claimActive);
+  tabImage.classList.toggle("active", !claimActive);
+  tabClaim.setAttribute("aria-selected", String(claimActive));
+  tabImage.setAttribute("aria-selected", String(!claimActive));
+}
+
+function triggerImagePicker() {
+  imageFileInput.click();
+}
+
+function setSelectedImage(file) {
+  const allowed = ["image/jpeg", "image/png", "image/webp"];
+  if (!allowed.includes(file.type)) {
+    showImageError("Unsupported image format. Please upload JPG, PNG, or WEBP.");
+    return;
+  }
+
+  selectedImageFile = file;
+  imagePreview.src = URL.createObjectURL(file);
+  imagePreviewWrap.classList.remove("hidden");
+  imageAnalyzeBtn.disabled = false;
+  imageResultsPanel.classList.add("hidden");
+}
+
+async function analyzeImage() {
+  if (!selectedImageFile) {
+    showImageError("Please upload an image first.");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("file", selectedImageFile);
+
+  imageAnalyzeBtn.disabled = true;
+
+  try {
+    const res = await fetch(`${API_BASE}/detect-image`, {
+      method: "POST",
+      body: formData,
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ detail: res.statusText }));
+      throw new Error(err.detail || "Image detection failed");
+    }
+    renderImageResult(await res.json());
+  } catch (err) {
+    showImageError(err.message);
+  } finally {
+    imageAnalyzeBtn.disabled = false;
+  }
+}
+
+function renderImageResult(data) {
+  const verdict = (data.verdict || "REAL").toUpperCase();
+  const confidence = Number(data.confidence) || 0;
+  const fakeProb = Math.max(0, Math.min(100, Number(data.fake_probability) || 0));
+  const realProb = Math.max(0, Math.min(100, Number(data.real_probability) || 0));
+
+  imageVerdictBadge.textContent = verdict;
+  imageVerdictBadge.className = `image-verdict ${verdict === "FAKE" ? "fake" : "real"}`;
+  imageConfidenceValue.textContent = `${confidence.toFixed(2)}%`;
+
+  imageFakeProbLabel.textContent = `${fakeProb.toFixed(2)}%`;
+  imageRealProbLabel.textContent = `${realProb.toFixed(2)}%`;
+  imageFakeProbFill.style.width = `${100 - fakeProb}%`;
+  imageRealProbFill.style.width = `${100 - realProb}%`;
+
+  imageExplanation.textContent = data.explanation || "No explanation provided.";
+  imageWarning.classList.toggle("hidden", verdict !== "FAKE");
+  imageResultsPanel.classList.remove("hidden");
+}
+
+function showImageError(message) {
+  const el = document.createElement("div");
+  el.className = "card";
+  el.style.cssText = "border-color:#fecaca;color:#991b1b;background:#fef2f2;";
+  el.textContent = `Error: ${message}`;
+  imageMode.insertAdjacentElement("afterbegin", el);
+  setTimeout(() => el.remove(), 5000);
+}
+
 function renderResults(data) {
   const verdict = (data.verdict || "UNVERIFIED").toUpperCase();
-  const score   = Number(data.credibility_score) || 0;
+  const score = Number(data.credibility_score) || 0;
 
-  // Verdict badge
   verdictBadge.textContent = verdict;
-  verdictBadge.className   = "verdict-badge " + verdict.toLowerCase();
+  verdictBadge.className = "verdict-badge " + verdict.toLowerCase();
 
-  // Chart + count-up score animation
-  renderChart(score);
-  animateScore(score);
+  if (verdict === "INVALID") {
+    chartSection.classList.add("hidden");
+    invalidPrompt.classList.remove("hidden");
+    scoreValue.textContent = "0";
+  } else {
+    chartSection.classList.remove("hidden");
+    invalidPrompt.classList.add("hidden");
+    renderChart(score);
+    animateScore(score);
+  }
 
-  // Analysis
   reasoningText.textContent = data.reasoning || "No reasoning provided.";
+  wikiSnippet.textContent = data.wikipedia_snippet || "No Wikipedia results found.";
+  webSnippet.textContent = data.web_snippets || "No web results found.";
+  redditSnippet.textContent = data.reddit_snippets || "No Reddit results found.";
 
-  // Snippets
-  wikiSnippet.textContent   = data.wikipedia_snippet || "No Wikipedia results found.";
-  webSnippet.textContent    = data.web_snippets      || "No web results found.";
-  redditSnippet.textContent = data.reddit_snippets   || "No Reddit results found.";
-
-  // Pill lists
-  renderPills(supportingList,    data.supporting_sources);
+  renderPills(supportingList, data.supporting_sources);
   renderPills(contradictingList, data.contradicting_sources);
 
-  // Stagger source cards into view
-  const sourceCards = [
-    document.getElementById("wiki-card"),
-    document.getElementById("web-card"),
-    document.getElementById("reddit-card"),
-  ];
-  sourceCards.forEach((card, i) => {
-    card.classList.remove("fade-slide-up");
-    void card.offsetWidth; // force reflow to restart animation
-    card.style.animationDelay = `${i * 120}ms`;
-    card.classList.add("fade-slide-up");
+  ["wiki-card", "web-card", "reddit-card"].forEach((id) => {
+    const card = document.getElementById(id);
+    card.style.animation = "none";
+    void card.offsetWidth;
+    card.style.animation = "fadeIn 0.2s ease";
   });
 
-  // Reveal panels
   resultsPanel.classList.remove("hidden");
   chatPanel.classList.remove("hidden");
   chatMessages.innerHTML = "";
-
-  // Auto-open chat on first result
   if (!chatOpen) toggleChat();
 
   setTimeout(() => {
@@ -1001,32 +1192,33 @@ function renderResults(data) {
   }, 80);
 }
 
-// ── Score count-up ────────────────────────────────────────────────────────
 function animateScore(target) {
   let current = 0;
-  const step  = target / 40;
+  const step = target / 60;
   const timer = setInterval(() => {
     current += step;
-    if (current >= target) { current = target; clearInterval(timer); }
+    if (current >= target) {
+      current = target;
+      clearInterval(timer);
+    }
     scoreValue.textContent = Math.round(current);
-  }, 25);
+  }, 20);
 }
 
-// ── Chart.js doughnut ─────────────────────────────────────────────────────
 function scoreToColor(score) {
-  if (score <= 40) return "#ef4444";
-  if (score <= 70) return "#f59e0b";
-  return "#22c55e";
+  if (score <= 40) return "#dc2626";
+  if (score <= 70) return "#d97706";
+  return "#16a34a";
 }
 
 function renderChart(score) {
-  const ctx       = document.getElementById("credibility-chart").getContext("2d");
-  const color     = scoreToColor(score);
+  const ctx = document.getElementById("credibility-chart").getContext("2d");
+  const color = scoreToColor(score);
   const remainder = 100 - score;
 
   if (credibilityChart) {
-    credibilityChart.data.datasets[0].data            = [score, remainder];
-    credibilityChart.data.datasets[0].backgroundColor = [color, "#1a1a24"];
+    credibilityChart.data.datasets[0].data = [score, remainder];
+    credibilityChart.data.datasets[0].backgroundColor = [color, "#e2e8f0"];
     credibilityChart.update();
     return;
   }
@@ -1035,27 +1227,25 @@ function renderChart(score) {
     type: "doughnut",
     data: {
       datasets: [{
-        data:            [score, remainder],
-        backgroundColor: [color, "#1a1a24"],
+        data: [score, remainder],
+        backgroundColor: [color, "#e2e8f0"],
         borderWidth: 0,
-        hoverOffset: 4,
       }],
     },
     options: {
-      cutout: "74%",
-      animation: { animateRotate: true, duration: 800 },
+      cutout: "78%",
+      animation: { animateRotate: true, duration: 350 },
       plugins: { legend: { display: false }, tooltip: { enabled: false } },
     },
   });
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────
 function renderPills(ulEl, items) {
   if (!items || items.length === 0) {
     ulEl.innerHTML = '<li class="pill">None</li>';
     return;
   }
-  ulEl.innerHTML = items.map(s => `<li class="pill">${escapeHtml(s)}</li>`).join("");
+  ulEl.innerHTML = items.map((s) => `<li class="pill">${escapeHtml(s)}</li>`).join("");
 }
 
 function escapeHtml(str) {
@@ -1070,39 +1260,35 @@ function setLoading(show) {
   if (show) {
     loadingEl.classList.remove("hidden");
     checkBtn.disabled = true;
-    checkBtn.classList.add("scanning");
     startLoadingSteps();
   } else {
     loadingEl.classList.add("hidden");
     checkBtn.disabled = false;
-    checkBtn.classList.remove("scanning");
     stopLoadingSteps();
   }
 }
 
 function showError(message) {
   const el = document.createElement("div");
-  el.className = "card animate-in";
-  el.style.cssText = "border-color:#ef4444;color:#ef4444;";
+  el.className = "card";
+  el.style.cssText = "border-color:#fecaca;color:#991b1b;background:#fef2f2;";
   el.textContent = `Error: ${message}`;
   loadingEl.insertAdjacentElement("afterend", el);
-  setTimeout(() => el.remove(), 6000);
+  setTimeout(() => el.remove(), 5000);
 }
 
-// ── Collapsible chat ──────────────────────────────────────────────────────
 function toggleChat() {
   chatOpen = !chatOpen;
   chatBody.classList.toggle("open", chatOpen);
   chatChevron.classList.toggle("open", chatOpen);
 }
 
-// ── Chat handler ──────────────────────────────────────────────────────────
 async function handleChat() {
   const message = chatInput.value.trim();
   if (!message) return;
 
   appendBubble(message, "user");
-  chatInput.value    = "";
+  chatInput.value = "";
   chatInput.disabled = true;
 
   const typingEl = showTyping();
@@ -1130,7 +1316,7 @@ async function handleChat() {
 
 function appendBubble(text, role) {
   const bubble = document.createElement("div");
-  bubble.className   = `bubble ${role}`;
+  bubble.className = `bubble ${role}`;
   bubble.textContent = text;
   chatMessages.appendChild(bubble);
   chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -1139,9 +1325,7 @@ function appendBubble(text, role) {
 function showTyping() {
   const el = document.createElement("div");
   el.className = "typing-indicator";
-  el.innerHTML = '<span class="typing-dot"></span>'
-               + '<span class="typing-dot"></span>'
-               + '<span class="typing-dot"></span>';
+  el.innerHTML = '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>';
   chatMessages.appendChild(el);
   chatMessages.scrollTop = chatMessages.scrollHeight;
   return el;

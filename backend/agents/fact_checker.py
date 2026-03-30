@@ -42,6 +42,45 @@ Analyze the provided evidence carefully and:
 Respond ONLY in valid JSON format with keys: verdict, credibility_score, reasoning, supporting_sources, contradicting_sources"""
 
 
+def is_valid_claim(claim: str) -> tuple[bool, str]:
+    """Check if input is actually a verifiable claim, not just a word or phrase."""
+
+    # Too short to be a claim
+    if len(claim.split()) < 4:
+        return (
+            False,
+            "Please enter a complete claim to fact-check. Example: 'The Great Wall of China is visible from space'",
+        )
+
+    # No verb present (basic check)
+    claim_lower = claim.lower()
+    verb_indicators = [
+        "is",
+        "are",
+        "was",
+        "were",
+        "has",
+        "have",
+        "had",
+        "can",
+        "will",
+        "does",
+        "did",
+        "caused",
+        "found",
+        "discovered",
+        "proven",
+        "showed",
+    ]
+    if not any(verb in claim_lower.split() for verb in verb_indicators):
+        return (
+            False,
+            "Please enter a complete sentence with a verb. Example: 'Coffee is bad for your health'",
+        )
+
+    return True, ""
+
+
 async def run_fact_check(claim: str) -> FactCheckResponse:
     """
     Orchestrate the full fact-checking pipeline and return a structured result.
