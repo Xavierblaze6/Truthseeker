@@ -3,17 +3,29 @@
 from __future__ import annotations
 
 from io import BytesIO
+import threading
 
 from PIL import Image, UnidentifiedImageError
 from transformers import pipeline
 
 _MODEL_NAME = "dima806/deepfake_vs_real_image_detection"
+_DETECTOR = None
+_DETECTOR_LOCK = threading.Lock()
 
-# Load once at startup. First download can take a while on cold environments.
-_DETECTOR = pipeline(
-    "image-classification",
-    model=_MODEL_NAME,
-)
+
+def _get_detector():
+    """Lazily initialize model so web server can bind port immediately on startup."""
+    global _DETECTOR  # pylint: disable=global-statement
+
+    if _DETECTOR is None:
+        with _DETECTOR_LOCK:
+            if _DETECTOR is None:
+                _DETECTOR = pipeline(
+                    "image-classification",
+                    model=_MODEL_NAME,
+                )
+
+    return _DETECTOR
 
 
 def detect_deepfake(image_bytes: bytes) -> dict:
@@ -23,7 +35,8 @@ def detect_deepfake(image_bytes: bytes) -> dict:
     except UnidentifiedImageError as exc:
         raise ValueError("Unsupported image format. Please upload JPG, PNG, or WEBP.") from exc
 
-    results = _DETECTOR(image)
+    detector = _get_detector()
+    results = detector(image)
 
     fake_score = next((r["score"] for r in results if str(r["label"]).lower() == "fake"), 0.0)
     real_score = next((r["score"] for r in results if str(r["label"]).lower() == "real"), 0.0)
