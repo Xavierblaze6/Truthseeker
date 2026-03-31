@@ -2,20 +2,17 @@
 
 from __future__ import annotations
 
-import os
 from io import BytesIO
 
 from PIL import Image, UnidentifiedImageError
 from transformers import pipeline
 
-_MODEL_NAME = "haywoodsloan/ai-image-detector"
-_HF_TOKEN = os.getenv("HF_TOKEN")
+_MODEL_NAME = "dima806/deepfake_vs_real_image_detection"
 
 # Load once at startup. First download can take a while on cold environments.
 _DETECTOR = pipeline(
     "image-classification",
     model=_MODEL_NAME,
-    token=_HF_TOKEN,
 )
 
 
